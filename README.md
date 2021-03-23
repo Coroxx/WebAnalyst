@@ -1,4 +1,4 @@
-# WebAnalyst
+# Web Analyst 🤖
 
 Installer :
 
