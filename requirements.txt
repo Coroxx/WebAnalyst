@@ -1,0 +1,4 @@
+requests
+htmlparser
+bs4
+wget
