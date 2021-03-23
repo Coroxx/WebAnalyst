@@ -20,19 +20,24 @@ COLORS = {
     "cyan-background": "\u001b[46;1m",
 }
 
+asciidraw = "\n[[lightyellow]] _ _ _     _      _____         _         _   \n| | | |___| |_   |  _  |___ ___| |_ _ ___| |_ \n| | | | -_| . |  |     |   | .'| | | |_ -|  _|\n|_____|___|___|  |__|__|_|_|__,|_|_  |___|_|  \n                                 |___|        \nAuthor : @Coroxx on github\n\n"
+
 
 def colorText(text):
     for color in COLORS:
         text = text.replace("[[" + color + "]]", COLORS[color])
     return text
- asciidraw = "\n[[lightyellow]] _ _ _     _      _____         _         _   \n| | | |___| |_   |  _  |___ ___| |_ _ ___| |_ \n| | | | -_| . |  |     |   | .'| | | |_ -|  _|\n|_____|___|___|  |__|__|_|_|__,|_|_  |___|_|  \n                                 |___|        \nAuthor : @Coroxx on github\n\n"
+
 
 def lang():
     global lang
+    global asciidraw
     os.system("clear")
-    response = input(colorText("[[cyan]]Language :\n\n[1] FR\n[2] ANG \n\nChoice : "))
+    response = input(
+        colorText("[[yellow]]Language :\n\n[1] FR\n[2] ANG \n\nChoice : "))
     if response == "1":
         lang = "fr"
+        asciidraw += "[1] Analyser une page web\n\n[2] Quitter"
     elif response == "2":
         lang = "ang"
     else:
@@ -42,7 +47,6 @@ def lang():
 
 
 lang()
-
 
 try:
     import requests
@@ -82,6 +86,8 @@ except:
 
 def parameters_FR():
     pass
+
+
 def parameters_US():
     pass
 
@@ -89,21 +95,32 @@ def parameters_US():
 def parser(url):
     pass
 
+
 def main_ANG():
+    pass
 
 
 def main_FR():
+    global asciidraw
     os.system("clear")
-    asciidraw += "[1] Analyser une page web\n\n[2] Quitter"
     print(colorText(asciidraw))
-    choice = input("\nChoix :")
-    if (choice == '1'):
-        parameters_FR()
-    elif(choice == '2'):
+    choice = input("\nChoix : ")
+    try:
+        choice = int(choice)
+    except ValueError:
+        print(colorText('[[red]]\n[!] Choix incorrect !\n'))
+        time.sleep(2)
         os.system('clear')
-        print(colorText('[[red]][!] Retour au terminal...'))
-        
+        main_FR()
+    if (choice == 1):
+        parameters_FR()
+    elif(choice == 2):
+        print(colorText('[[red]]\n[!] Retour au terminal...'))
+        sys.exit()
+    else:
+        print(colorText('[[red]]\n[!] Choix incorrect !\n'))
+        time.sleep(2)
+        main_FR()
 
 
-if __name__ == "__main__":
-    main_FR()
+main_FR()
