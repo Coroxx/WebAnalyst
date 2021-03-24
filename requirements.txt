@@ -2,3 +2,4 @@ requests
 htmlparser
 bs4
 wget
+ipwhois
