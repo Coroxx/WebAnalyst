@@ -118,20 +118,30 @@ def parameters_FR():
 
     os.system('clear')
     if whoisresult:
-        whoisresult = whois.query(link)
-        print(colorText('[[blue]]Whois : '),
+        if 'https://' in link:
+            whoisresult = whois.query(link.replace('https://', ''))
+        elif 'http//' in link:
+            whoisresult = whois.query(link.replace('http://', ''))
+        print(colorText('[[blue]]\nWhois : '),
               '\n\nDate d\'expiration du domaine :', whoisresult.expiration_date,
               '\nDate de création du domaine :', whoisresult.creation_date,
               '\nNom : ', whoisresult.registrar,
               '\nDernière mise à jour : ', whoisresult.last_updated)
 
     time.sleep(2)
-    print(colorText('[[green]]--Résultats--'),
-          '\n\n\n Nombre de titres : ', result[3],
-          '\nNombre de liens : ', result[1],
-          '\nNombre d\'image : ', result[2],
-          '\nNombre de div : ', result[0],
-          '\nNombre de formulaires : ', result[4])
+    print(colorText('[[green]]\n\n--Résultats--'),
+          '\n\n\nNombre de très grands titres (h1) : ', result[3],
+          '\nNombre de grands titres (h2) : ', result[4],
+          '\nNombre de titres moyens (h3) : ', result[5],
+          '\nNombre de titres (h4) : ', result[6],
+          '\nNombre de petits titres (h5) : ', result[7],
+          '\nNombre de liens <a> : ', result[1],
+          '\nNombre d\'image <img>: ', result[2],
+          '\nNombre de <div> : ', result[0],
+          '\nNombre de total de balises de texte : ', result[7],
+          '\nNombre de champs <input> : ', result[8],
+          '\nNombre de boutons <button> : ', result[9],
+          '\nNombre de formulaires <form> : ', result[10])
     time.sleep(2)
     again = input(colorText(
         '[[yellow]]\n[?] Voulez-vous analyser un nouveau domaine ? (y/n): '))
@@ -185,7 +195,14 @@ def parser(url, whois):
     counts.append((request.text.count('<div')))
     counts.append((request.text.count('<a')))
     counts.append((request.text.count('<img')))
-    counts.append((request.text.count('<h')))
+    counts.append((request.text.count('<h1')))
+    counts.append((request.text.count('<h2')))
+    counts.append((request.text.count('<h3')))
+    counts.append((request.text.count('<h4')))
+    counts.append((request.text.count('<h4') + request.text.count('<h3') +
+                  request.text.count('<h2') + request.text.count('<h1') + request.text.count('<p')))
+    counts.append((request.text.count('<input')))
+    counts.append((request.text.count('<button')))
     counts.append((request.text.count('<form')))
     if '<script' in request.text:
         counts.append(True)
