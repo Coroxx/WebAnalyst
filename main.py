@@ -32,22 +32,22 @@ def colorText(text):
 
 
 def lang():
-    global lang
+    global language
     global asciidraw
     os.system("clear")
     response = input(
         colorText("[[yellow]]Language/Langue :\n\n[1] French\n[2] English \n\nChoice : "))
     if response == "1":
-        lang = "fr"
+        language = "fr"
+        main_FR()
     elif response == "2":
-        lang = "ang"
+        language = "ang"
+        main_ANGw()
     else:
         print(colorText("[[red]]\n[!] Incorrect choice, try again"))
         time.sleep(2)
         lang()
 
-
-lang()
 
 try:
     import requests
@@ -56,14 +56,14 @@ try:
     from urllib.request import urlopen
 except:
     os.system("clear")
-    if lang == "fr":
+    if language == "fr":
         print(
             colorText(
                 "[[red]]Tu n'a pas correctement réalisé l'installation, laisse moi le faire pour toi.."
             )
         )
         time.sleep(2)
-    elif lang == "ang":
+    elif language == "ang":
         print(
             colorText(
                 "[[red]]You didn't do the installation correctly, let me do it for you..."
@@ -189,12 +189,12 @@ def parameters_US():
         print(colorText('[[red]][!] Incorrect syntax !'))
         time.sleep(2)
         parameters_US()
-    whois = input(colorText(
+    whoisresult = input(colorText(
         '[[yellow]]\n[?] Do you want to scan the domain using whois? (y/n): '))
-    if (bool(re.match(r"OUI|oui|y(?:es)?|Y", whois))):
-        whois = True
-    elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", whois))):
-        whois = False
+    if (bool(re.match(r"OUI|oui|y(?:es)?|Y", whoisresult))):
+        whoisresult = True
+    elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", whoisresult))):
+        whoisresult = False
     else:
         print(colorText('[[red]][!] Incorrect choice'))
         time.sleep(2)
@@ -203,9 +203,65 @@ def parameters_US():
     print(colorText('\n[[green]][+] Starting the analysis...'))
     time.sleep(1)
 
-    parser(link, whois)
+    result = parser(link, whois)
 
-    return link
+    time.sleep(1)
+
+    os.system('clear')
+    if whoisresult:
+        if 'https://' in link:
+            whoisresult = whois.query(link.replace('https://', ''))
+        elif 'http://' in link:
+            whoisresult = whois.query(link.replace('http://', ''))
+        print(colorText('[[blue]]\nWhois : '),
+              '\n\nDomain expiration date :', whoisresult.expiration_date,
+              '\nDomain creation date:', whoisresult.creation_date,
+              '\nServer : ', whoisresult.registrar,
+              '\nLastest update: ', whoisresult.last_updated)
+
+    time.sleep(2)
+    print(colorText('[[green]]\n\n--Résultats--'),
+          '\n\n\nNumber of very large titles (h1) : ', result[3],
+          '\nNumber of major titles (h2) : ', result[4],
+          '\nNumber of medium-sized titles (h3) : ', result[5],
+          '\nNumber of titles (h4) : ', result[6],
+          '\nNumber of texts <p> : ', result[7],
+          '\nNumber of links <a> : ', result[1],
+          '\nNumber of images <img>: ', result[2],
+          '\nNumber of div <div> : ', result[0],
+          '\nTotal number of text tags : ', result[7],
+          '\nNumber of <input> fields : ', result[8],
+          '\nNumber of buttons <button> : ', result[9],
+          '\nNumber of forms <form> <form> : ', result[10])
+    time.sleep(2)
+    if result[11]:
+        varcount = request.text.count('var')
+        functioncount = request.text.count('function')
+        print(
+            colorText('\n[[cyan]][+] Javascript is detected on this page with a total of {} variables declared\nNumber of function(s) : {}').format(varcount, functioncount))
+    else:
+        print(
+            colorText('[[red]]\n[-] No javascript is present on this page\n'))
+    customquestion = input(colorText(
+        '[[yellow]]\n[?] Do you want to add html tags to search? (Separated by a comma, example : <span, <footer, ...) : '))
+    customs = customquestion.split(",")
+    if customquestion == '':
+        customs = False
+    if customs:
+        print(colorText('[[yellow]]\n\n--Custom--\n'))
+        for custom in customs:
+            resultcustom = request.text.count(str(custom))
+            print(colorText('Number of '),
+                  custom, ': ', resultcustom)
+    customs = []
+    again = input(colorText(
+        '[[yellow]]\n[?] Do you want to analyse a new domain? (y/n): '))
+    if (bool(re.match(r"OUI|oui|y(?:es)?|Y", again))):
+        parameters_FR()
+    elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", again))):
+        os.system('clear')
+        print(colorText('\n[[red]][!] Exiting... '))
+        sys.exit()
 
 
 def parser(url, whois):
@@ -232,13 +288,37 @@ def parser(url, whois):
 
 
 def main_ANG():
-    pass
+    global asciidraw
+    os.system("clear")
+    print(colorText(asciidraw),
+          "\n[1] Analyse a web page\n[2] Langue/Langage\n\n\n[3] Exit")
+    choice = input("\nChoix : ")
+    try:
+        choice = int(choice)
+    except ValueError:
+        print(colorText('[[red]]\n[!] Incorrect choice !\n'))
+        time.sleep(2)
+        os.system('clear')
+        main_ANG()
+    if (choice == 1):
+        parameters_FR()
+    elif(choice == 2):
+        lang()
+    elif(choice == 3):
+        print(colorText('[[red]]\n[!] Exiting..'))
+        time.sleep(1)
+        sys.exit()
+    else:
+        print(colorText('[[red]]\n[!] Incorrect choice !\n'))
+        time.sleep(2)
+        main_ANG()
 
 
 def main_FR():
     global asciidraw
     os.system("clear")
-    print(colorText(asciidraw), "\n[1] Analyser une page web\n\n[2] Quitter")
+    print(colorText(asciidraw),
+          "\n[1] Analyser une page web\n[2] Langue/Langage\n\n\n[3] Quitter")
     choice = input("\nChoix : ")
     try:
         choice = int(choice)
@@ -250,6 +330,8 @@ def main_FR():
     if (choice == 1):
         parameters_FR()
     elif(choice == 2):
+        lang()
+    elif(choice == 3):
         print(colorText('[[red]]\n[!] Retour au terminal...'))
         sys.exit()
     else:
@@ -258,6 +340,5 @@ def main_FR():
         main_FR()
 
 
-main_FR()
-
-print()
+if __name__ == '__main__':
+    lang()
