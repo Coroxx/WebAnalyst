@@ -143,6 +143,19 @@ def parameters_FR():
           '\nNombre de boutons <button> : ', result[9],
           '\nNombre de formulaires <form> : ', result[10])
     time.sleep(2)
+    count = 0
+    customs = []
+    customquestion = input(colorText(
+        '[[yellow]]\n[?] Voulez-vous ajouter des balises html à rechercher ? (Séparées d\'une virgule) : '))
+    customs.append(customquestion.split(","))
+    if (customs):
+        print(colorText('[[yellow]]--Custom--'))
+        for custom in customs:
+            count += 1
+            resultcustom = request.text.count(custom)
+            print(colorText('Nombre total de '),
+                  custom, ': ', resultcustom)
+
     again = input(colorText(
         '[[yellow]]\n[?] Voulez-vous analyser un nouveau domaine ? (y/n): '))
     if (bool(re.match(r"OUI|oui|y(?:es)?|Y", again))):
