@@ -120,7 +120,7 @@ def parameters_FR():
     if whoisresult:
         if 'https://' in link:
             whoisresult = whois.query(link.replace('https://', ''))
-        elif 'http//' in link:
+        elif 'http://' in link:
             whoisresult = whois.query(link.replace('http://', ''))
         print(colorText('[[blue]]\nWhois : '),
               '\n\nDate d\'expiration du domaine :', whoisresult.expiration_date,
@@ -134,7 +134,7 @@ def parameters_FR():
           '\nNombre de grands titres (h2) : ', result[4],
           '\nNombre de titres moyens (h3) : ', result[5],
           '\nNombre de titres (h4) : ', result[6],
-          '\nNombre de petits titres (h5) : ', result[7],
+          '\nNombre de textes <p> : ', result[7],
           '\nNombre de liens <a> : ', result[1],
           '\nNombre d\'image <img>: ', result[2],
           '\nNombre de <div> : ', result[0],
@@ -143,25 +143,33 @@ def parameters_FR():
           '\nNombre de boutons <button> : ', result[9],
           '\nNombre de formulaires <form> : ', result[10])
     time.sleep(2)
-    count = 0
-    customs = []
+    if result[11]:
+        varcount = request.text.count('var')
+        functioncount = request.text.count('function')
+        print(
+            colorText('\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}').format(varcount, functioncount))
+    else:
+        print(
+            colorText('[[red]]\n[-] Aucun javascript n\'est présent sur cette page\n'))
     customquestion = input(colorText(
-        '[[yellow]]\n[?] Voulez-vous ajouter des balises html à rechercher ? (Séparées d\'une virgule) : '))
-    customs.append(customquestion.split(","))
-    if (customs):
-        print(colorText('[[yellow]]--Custom--'))
+        '[[yellow]]\n[?] Voulez-vous ajouter des balises html à rechercher ? (Séparées d\'une virgule, exemple : <span, <footer, ...) : '))
+    customs = customquestion.split(",")
+    if customquestion == '':
+        customs = False
+    if customs:
+        print(colorText('[[yellow]]\n\n--Custom--\n'))
         for custom in customs:
-            count += 1
-            resultcustom = request.text.count(custom)
+            resultcustom = request.text.count(str(custom))
             print(colorText('Nombre total de '),
                   custom, ': ', resultcustom)
-
+    customs = []
     again = input(colorText(
         '[[yellow]]\n[?] Voulez-vous analyser un nouveau domaine ? (y/n): '))
     if (bool(re.match(r"OUI|oui|y(?:es)?|Y", again))):
         parameters_FR()
     elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", again))):
         os.system('clear')
+        print(request.text)
         print(colorText('\n[[red]][!] Retour au terminal... '))
         sys.exit()
 

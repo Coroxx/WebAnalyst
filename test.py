@@ -1,4 +1,5 @@
-import whois
+import requests
 
-d = whois.query('https://google.com')
-print(d)
+request = requests.get('https://google.com')
+
+print(request.text)
