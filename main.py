@@ -42,7 +42,7 @@ def lang():
         main_FR()
     elif response == "2":
         language = "ang"
-        main_ANGw()
+        main_ANG()
     else:
         print(colorText("[[red]]\n[!] Incorrect choice, try again"))
         time.sleep(2)
