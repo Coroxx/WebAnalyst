@@ -169,7 +169,6 @@ def parameters_FR():
         parameters_FR()
     elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", again))):
         os.system('clear')
-        print(request.text)
         print(colorText('\n[[red]][!] Retour au terminal... '))
         sys.exit()
 
