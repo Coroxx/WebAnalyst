@@ -118,15 +118,14 @@ def parameters_FR():
 
     os.system('clear')
     if whoisresult:
-        if 'https://' in link:
-            whoisresult = whois.query(link.replace('https://', ''))
-        elif 'http://' in link:
-            whoisresult = whois.query(link.replace('http://', ''))
+        link = re.findall(
+            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', link)
+        whoisresults = whois.query(link[0])
         print(colorText('[[blue]]\nWhois : '),
-              '\n\nDate d\'expiration du domaine :', whoisresult.expiration_date,
-              '\nDate de création du domaine :', whoisresult.creation_date,
-              '\nNom : ', whoisresult.registrar,
-              '\nDernière mise à jour : ', whoisresult.last_updated)
+              '\n\nDate d\'expiration du domaine :', whoisresults.expiration_date,
+              '\nDate de création du domaine :', whoisresults.creation_date,
+              '\nNom : ', whoisresults.registrar,
+              '\nDernière mise à jour : ', whoisresults.last_updated)
 
     time.sleep(2)
     print(colorText('[[green]]\n\n--Résultats--'),
@@ -136,18 +135,22 @@ def parameters_FR():
           '\nNombre de titres (h4) : ', result[6],
           '\nNombre de textes <p> : ', result[7],
           '\nNombre de liens <a> : ', result[1],
-          '\nNombre d\'image <img>: ', result[2],
+          '\nNombre d\'image <img> et <svg>: ', result[2],
           '\nNombre de <div> : ', result[0],
           '\nNombre de total de balises de texte : ', result[7],
           '\nNombre de champs <input> : ', result[8],
           '\nNombre de boutons <button> : ', result[9],
-          '\nNombre de formulaires <form> : ', result[10])
+          '\nNombre de formulaires <form> : ', result[10],
+          '\nNombre de listes <ul> et <ol> : ', result[11],
+          '\nNombre d\'élements de listes <li>: ', result[12])
     time.sleep(2)
     if result[11]:
         varcount = request.text.count('var')
         functioncount = request.text.count('function')
+        conditioncount = request.text.count(
+            'if') + request.text.count('else') + request.text.count('else if')
         print(
-            colorText('\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}').format(varcount, functioncount))
+            colorText('\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}\nNombre de condition(s) : {}').format(varcount, functioncount, conditioncount))
     else:
         print(
             colorText('[[red]]\n[-] Aucun javascript n\'est présent sur cette page\n'))
@@ -209,15 +212,14 @@ def parameters_US():
 
     os.system('clear')
     if whoisresult:
-        if 'https://' in link:
-            whoisresult = whois.query(link.replace('https://', ''))
-        elif 'http://' in link:
-            whoisresult = whois.query(link.replace('http://', ''))
+        link = re.match(
+            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', link)
+        whoisresults = whois.query(link[0])
         print(colorText('[[blue]]\nWhois : '),
-              '\n\nDomain expiration date :', whoisresult.expiration_date,
-              '\nDomain creation date:', whoisresult.creation_date,
-              '\nServer : ', whoisresult.registrar,
-              '\nLastest update: ', whoisresult.last_updated)
+              '\n\nDomain expiration date :', whoisresults.expiration_date,
+              '\nDomain creation date:', whoisresults.creation_date,
+              '\nServer : ', whoisresults.registrar,
+              '\nLastest update: ', whoisresults.last_updated)
 
     time.sleep(2)
     print(colorText('[[green]]\n\n--Résultats--'),
@@ -227,18 +229,22 @@ def parameters_US():
           '\nNumber of titles (h4) : ', result[6],
           '\nNumber of texts <p> : ', result[7],
           '\nNumber of links <a> : ', result[1],
-          '\nNumber of images <img>: ', result[2],
+          '\nNumber of images <img> and <svg> : ', result[2],
           '\nNumber of div <div> : ', result[0],
           '\nTotal number of text tags : ', result[7],
           '\nNumber of <input> fields : ', result[8],
           '\nNumber of buttons <button> : ', result[9],
-          '\nNumber of forms <form> <form> : ', result[10])
+          '\nNumber of forms <form> : ', result[10]),
+    '\nNumber of lists <ul> and <ol> : ', result[11],
+    '\nNumber of list items : ', result[12]
     time.sleep(2)
     if result[11]:
         varcount = request.text.count('var')
         functioncount = request.text.count('function')
+        conditioncount = request.text.count(
+            'if') + request.text.count('else') + request.text.count('else if')
         print(
-            colorText('\n[[cyan]][+] Javascript is detected on this page with a total of {} variables declared\nNumber of function(s) : {}').format(varcount, functioncount))
+            colorText('\n[[cyan]][+] Javascript is detected on this page with a total of {} variables declared\nNumber of function(s) : {}\n Number of condition(s) : {}').format(varcount, functioncount, conditioncount))
     else:
         print(
             colorText('[[red]]\n[-] No javascript is present on this page\n'))
@@ -270,7 +276,7 @@ def parser(url, whois):
 
     counts.append((request.text.count('<div')))
     counts.append((request.text.count('<a')))
-    counts.append((request.text.count('<img')))
+    counts.append((request.text.count('<img')) + (request.text.count('<svg')))
     counts.append((request.text.count('<h1')))
     counts.append((request.text.count('<h2')))
     counts.append((request.text.count('<h3')))
@@ -284,6 +290,9 @@ def parser(url, whois):
         counts.append(True)
     else:
         counts.append(False)
+    counts.append((request.text.count('<ul')) + (request.text.count('<ol')))
+    counts.append((request.text.count('<li')))
+
     return counts
 
 
@@ -301,7 +310,7 @@ def main_ANG():
         os.system('clear')
         main_ANG()
     if (choice == 1):
-        parameters_FR()
+        parameters_US()
     elif(choice == 2):
         lang()
     elif(choice == 3):

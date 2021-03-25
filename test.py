@@ -1,5 +1,5 @@
 import requests
 
-request = requests.get('https://google.com')
+request = requests.get('https://github.com/sindresorhus/awesome')
 
 print(request.text)
