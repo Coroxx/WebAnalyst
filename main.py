@@ -129,22 +129,21 @@ def parameters_FR():
 
     time.sleep(2)
     print(colorText('[[green]]\n\n--Résultats--'),
-          '\n\n\nNombre de très grands titres (h1) : ', result[3],
-          '\nNombre de grands titres (h2) : ', result[4],
-          '\nNombre de titres moyens (h3) : ', result[5],
-          '\nNombre de titres (h4) : ', result[6],
-          '\nNombre de textes <p> : ', result[7],
-          '\nNombre de liens <a> : ', result[1],
-          '\nNombre d\'image <img> et <svg>: ', result[2],
-          '\nNombre de <div> : ', result[0],
-          '\nNombre de total de balises de texte : ', result[7],
+          '\n\n\nNombre de très grands titres (h1) : ', result[0],
+          '\nNombre de grands titres (h2) : ', result[1],
+          '\nNombre de titres moyens (h3) : ', result[2],
+          '\nNombre de titres (h4) : ', result[3],
+          '\nNombre de textes <p> : ', result[4],
+          '\nNombre de liens <a> : ', result[5],
+          '\nNombre d\'image <img> et <svg>: ', result[6],
+          '\nNombre de <div> : ', result[7],
           '\nNombre de champs <input> : ', result[8],
           '\nNombre de boutons <button> : ', result[9],
           '\nNombre de formulaires <form> : ', result[10],
           '\nNombre de listes <ul> et <ol> : ', result[11],
           '\nNombre d\'élements de listes <li>: ', result[12])
     time.sleep(2)
-    if result[11]:
+    if result[13] >= 1:
         varcount = request.text.count('var')
         functioncount = request.text.count('function')
         conditioncount = request.text.count(
@@ -154,6 +153,9 @@ def parameters_FR():
     else:
         print(
             colorText('[[red]]\n[-] Aucun javascript n\'est présent sur cette page\n'))
+    if result[14] >= 1:
+        print(colorText(
+            '[[magenta]]\n\n[+] CSS Framework detected ! (TailWind CSS integrated by CND)\n'))
     customquestion = input(colorText(
         '[[yellow]]\n[?] Voulez-vous ajouter des balises html à rechercher ? (Séparées d\'une virgule, exemple : <span, <footer, ...) : '))
     customs = customquestion.split(",")
@@ -237,7 +239,7 @@ def parameters_US():
     '\nNumber of lists <ul> and <ol> : ', result[11],
     '\nNumber of list items : ', result[12]
     time.sleep(2)
-    if result[11]:
+    if result[13]:
         varcount = request.text.count('var')
         functioncount = request.text.count('function')
         conditioncount = request.text.count(
