@@ -223,15 +223,14 @@ def parameters_US():
 
     time.sleep(2)
     print(colorText('[[green]]\n\n--Résultats--'),
-          '\n\n\nNumber of very large titles (h1) : ', result[3],
-          '\nNumber of major titles (h2) : ', result[4],
-          '\nNumber of medium-sized titles (h3) : ', result[5],
-          '\nNumber of titles (h4) : ', result[6],
-          '\nNumber of texts <p> : ', result[7],
-          '\nNumber of links <a> : ', result[1],
-          '\nNumber of images <img> and <svg> : ', result[2],
-          '\nNumber of div <div> : ', result[0],
-          '\nTotal number of text tags : ', result[7],
+          '\n\n\nNumber of very large titles (h1) : ', result[0],
+          '\nNumber of major titles (h2) : ', result[1],
+          '\nNumber of medium-sized titles (h3) : ', result[2],
+          '\nNumber of titles (h4) : ', result[3],
+          '\nNumber total of texts <p> & <h1.... : ', result[4],
+          '\nNumber of links <a> : ', result[5],
+          '\nNumber of images <img> and <svg> : ', result[6],
+          '\nNumber of div <div> : ', result[7],
           '\nNumber of <input> fields : ', result[8],
           '\nNumber of buttons <button> : ', result[9],
           '\nNumber of forms <form> : ', result[10]),
@@ -248,6 +247,9 @@ def parameters_US():
     else:
         print(
             colorText('[[red]]\n[-] No javascript is present on this page\n'))
+    if result[13]:
+        print(colorText(
+            '[[magenta]][+] CSS Framework dedected ! (Tailwind CSS integrated by CDN) '))
     customquestion = input(colorText(
         '[[yellow]]\n[?] Do you want to add html tags to search? (Separated by a comma, example : <span, <footer, ...) : '))
     customs = customquestion.split(",")
@@ -274,24 +276,25 @@ def parser(url, whois):
     global request
     counts = []
 
-    counts.append((request.text.count('<div')))
-    counts.append((request.text.count('<a')))
-    counts.append((request.text.count('<img')) + (request.text.count('<svg')))
     counts.append((request.text.count('<h1')))
     counts.append((request.text.count('<h2')))
     counts.append((request.text.count('<h3')))
     counts.append((request.text.count('<h4')))
     counts.append((request.text.count('<h4') + request.text.count('<h3') +
                   request.text.count('<h2') + request.text.count('<h1') + request.text.count('<p')))
+    counts.append((request.text.count('<a')))
+    counts.append((request.text.count('<img')) + (request.text.count('<svg')))
+    counts.append((request.text.count('<div')))
     counts.append((request.text.count('<input')))
     counts.append((request.text.count('<button')))
     counts.append((request.text.count('<form')))
+    counts.append((request.text.count('<ul')) + (request.text.count('<ol')))
+    counts.append((request.text.count('<li')))
+    counts.append((request.text.count('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">')))
     if '<script' in request.text:
         counts.append(True)
     else:
         counts.append(False)
-    counts.append((request.text.count('<ul')) + (request.text.count('<ol')))
-    counts.append((request.text.count('<li')))
 
     return counts
 
