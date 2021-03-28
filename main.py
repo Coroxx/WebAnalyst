@@ -106,9 +106,9 @@ def parameters_FR():
     whoisresult = input(colorText(
         '[[yellow]]\n[?] Voulez-vous analyser le domaine automatiquement à l\'aide de whois ? (y/n): '))
     if (bool(re.match(r"OUI|oui|y(?:es)?|Y", whoisresult))):
-        settings.append(True)
+        whoisresult = True
     elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", whoisresult))):
-        settings.append(False)
+        whoisresult = False
     time.sleep(2)
     print(colorText('\n[[green]][+] Démarrage de l\'analyse...'))
 
@@ -143,19 +143,20 @@ def parameters_FR():
           '\nNombre de listes <ul> et <ol> : ', result[11],
           '\nNombre d\'élements de listes <li>: ', result[12])
     time.sleep(2)
-    if result[13] >= 1:
+    if result[14] >= 1:
         varcount = request.text.count('var')
         functioncount = request.text.count('function')
         conditioncount = request.text.count(
-            'if') + request.text.count('else') + request.text.count('else if')
+            'if(') + request.text.count('else(') + request.text.count('else if(') + request.text.count(
+            'if (') + request.text.count('else (') + request.text.count('else if (')
         print(
             colorText('\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}\nNombre de condition(s) : {}').format(varcount, functioncount, conditioncount))
     else:
         print(
             colorText('[[red]]\n[-] Aucun javascript n\'est présent sur cette page\n'))
-    if result[14] >= 1:
+    if result[13] >= 1:
         print(colorText(
-            '[[magenta]]\n\n[+] CSS Framework detected ! (TailWind CSS integrated by CND)\n'))
+            '[[magenta]]\n\n[+] CSS Framework detected ! (TailWind CSS integrated by CDN)\n'))
     customquestion = input(colorText(
         '[[yellow]]\n[?] Voulez-vous ajouter des balises html à rechercher ? (Séparées d\'une virgule, exemple : <span, <footer, ...) : '))
     customs = customquestion.split(",")
@@ -214,7 +215,7 @@ def parameters_US():
 
     os.system('clear')
     if whoisresult:
-        link = re.match(
+        link = re.findall(
             r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', link)
         whoisresults = whois.query(link[0])
         print(colorText('[[blue]]\nWhois : '),
@@ -239,21 +240,22 @@ def parameters_US():
     '\nNumber of lists <ul> and <ol> : ', result[11],
     '\nNumber of list items : ', result[12]
     time.sleep(2)
-    if result[13]:
+    if result[14] >= 1:
         varcount = request.text.count('var')
         functioncount = request.text.count('function')
         conditioncount = request.text.count(
-            'if') + request.text.count('else') + request.text.count('else if')
+            'if(') + request.text.count('else(') + request.text.count('else if(') + request.text.count(
+            'if (') + request.text.count('else (') + request.text.count('else if (')
         print(
-            colorText('\n[[cyan]][+] Javascript is detected on this page with a total of {} variables declared\nNumber of function(s) : {}\n Number of condition(s) : {}').format(varcount, functioncount, conditioncount))
+            colorText('\n[[cyan]][+] Javascript is detected on this page with a total of {} variables declared\nNumber of function(s) : {}\nNumber of condition(s) : {}').format(varcount, functioncount, conditioncount))
     else:
         print(
             colorText('[[red]]\n[-] No javascript is present on this page\n'))
-    if result[13]:
+    if result[13] >= 1:
         print(colorText(
             '[[magenta]][+] CSS Framework dedected ! (Tailwind CSS integrated by CDN) '))
     customquestion = input(colorText(
-        '[[yellow]]\n[?] Do you want to add html tags to search? (Separated by a comma, example : <span, <footer, ...) : '))
+        '[[yellow]]\n[?] Do you want to add html tags to search? (Separated by a comma, format example : <span, <footer, ...) : '))
     customs = customquestion.split(",")
     if customquestion == '':
         customs = False
@@ -293,10 +295,7 @@ def parser(url, whois):
     counts.append((request.text.count('<ul')) + (request.text.count('<ol')))
     counts.append((request.text.count('<li')))
     counts.append((request.text.count('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">')))
-    if '<script' in request.text:
-        counts.append(True)
-    else:
-        counts.append(False)
+    counts.append((request.text.count('<script')))
 
     return counts
 
