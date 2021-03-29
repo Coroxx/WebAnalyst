@@ -1,6 +1,6 @@
 # Web Analyst 🦉
 
-![alt text](https://i.ibb.co/yYLqs8c/image.png)
+![alt text](https://i.ibb.co/t4zX4X4/image.png)
 
 Two languages available ⚔️ :
 
@@ -40,6 +40,28 @@ Fonctionnalitées :
   - Obtenez des détails sur tous les fichiers script lié aux balises <script>
 
   ![alt text](https://i.ibb.co/0j0tHQB/image.png)
+  
+  WhoIs Scan 🩺 :
+  
+  ![alt text](https://i.ibb.co/99gYQf9/image.png)
+  
+  
+  
+  Possibilité de chercher des balises manuellement : 
+  
+   ![alt text](https://i.ibb.co/4jX5c0J/image.png)
+   
+  Toutes les propositions d'ajouts seront traitées :D, n'hésitez pas ! 
+   
+   
+   
+  En cas d'erreur comme celle-ci lors du whois : 
+  
+  ![alt text](https://i.ibb.co/ZKnsqZv/image.png) 
+  
+  Aucune solution n'est proposée à ce jour appart refuser l'analyse whois, tentez d'exécuter le script sur un autre système d'exploitation.
+  
+  
 
 
 **English 🧦 :**
