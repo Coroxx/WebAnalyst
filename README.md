@@ -2,7 +2,7 @@
 
 ![alt text](https://i.ibb.co/yYLqs8c/image.png)
 
-**French 🇫🇷 :**
+**French 🧶 :**
 Installer :
 
 ```
@@ -16,9 +16,27 @@ Si il est impossible d'installer les paquets via pip, notamment sur Mac OS, veui
 ```
 python -m pip install -r requirements.txt
 ```
+Fonctionnalitées : 
+  HTML 🌡️ : 
+  
+  - Obtenez le nombre détaillé de texte 
+  - Obtenez le nombre d'image
+  - Obtenez le nombre de liens 
+  - Obtenez le nombre de div 
+  - ...
+  ![alt text](https://i.ibb.co/GQgg6Z6/image.png)
+  
+  Javascript 📌 : 
+  
+  - Nombre de conditions
+  - Nombre de déclarations de variables
+  - Nombre de fonctions
+  - Obtenez des détails sur tous les fichiers script lié aux balises <script>
+
+  ![alt text](https://i.ibb.co/0j0tHQB/image.png)
 
 
-**English 🇺🇸 :**
+**English 🧦 :**
 
 Install : 
 
