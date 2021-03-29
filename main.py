@@ -269,7 +269,7 @@ def parameters_US():
     again = input(colorText(
         '[[yellow]]\n[?] Do you want to analyse a new domain? (y/n): '))
     if (bool(re.match(r"OUI|oui|y(?:es)?|Y", again))):
-        parameters_FR()
+        parameters_US()
     elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", again))):
         os.system('clear')
         print(colorText('\n[[red]][!] Exiting... '))
