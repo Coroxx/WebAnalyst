@@ -225,7 +225,7 @@ def parameters_US():
               '\nLastest update: ', whoisresults.last_updated)
 
     time.sleep(2)
-    print(colorText('[[green]]\n\n--Résultats--'),
+    print(colorText('[[green]]\n\n--Results--'),
           '\n\n\nNumber of very large titles (h1) : ', result[0],
           '\nNumber of major titles (h2) : ', result[1],
           '\nNumber of medium-sized titles (h3) : ', result[2],
