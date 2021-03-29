@@ -1,4 +1,5 @@
 # Web Analyst 🦉
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
 ![alt text](https://i.ibb.co/t4zX4X4/image.png)
 
