@@ -36,7 +36,10 @@ def lang():
     global asciidraw
     os.system("clear")
     response = input(
-        colorText("[[yellow]]Language/Langue :\n\n[1] French\n[2] English \n\nChoice : "))
+        colorText(
+            "[[yellow]]Language/Langue :\n\n[1] French\n[2] English \n\nChoice : "
+        )
+    )
     if response == "1":
         language = "fr"
         main_FR()
@@ -91,238 +94,364 @@ def parameters_FR():
     global request
     global completelink
 
-    completelink = str(input(colorText(
-        "[[white]]\nLien de la page (doit commencer par https/http): ")))
-    if (bool(re.match(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*', completelink))):
+    completelink = str(
+        input(colorText("[[white]]\nLien de la page (doit commencer par https/http): "))
+    )
+    if bool(
+        re.match(
+            r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*",
+            completelink,
+        )
+    ):
         try:
             request = requests.get(completelink, timeout=5)
-            print(colorText('[[green]][+] Ajouté !'))
+            print(colorText("[[green]][+] Ajouté !"))
             settings.append(completelink)
         except:
-            print(colorText('\n[[red]][-] Le site ne réponds pas..'))
+            print(colorText("\n[[red]][-] Le site ne réponds pas.."))
             time.sleep(2)
             parameters_FR()
     else:
-        print(colorText('[[red]][!] Syntaxe incorrecte !'))
+        print(colorText("[[red]][!] Syntaxe incorrecte !"))
         time.sleep(2)
         parameters_FR()
-    whoisresult = input(colorText(
-        '[[yellow]]\n[?] Voulez-vous analyser le domaine automatiquement à l\'aide de whois ? (y/n): '))
-    if (bool(re.match(r"OUI|oui|y(?:es)?|Y", whoisresult))):
+    whoisresult = input(
+        colorText(
+            "[[yellow]]\n[?] Voulez-vous analyser le domaine automatiquement à l'aide de whois ? (y/n): "
+        )
+    )
+    if bool(re.match(r"OUI|oui|y(?:es)?|Y", whoisresult)):
         whoisresult = True
-    elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", whoisresult))):
+    elif bool(re.match(r"N(?:ON)?|n(?:on?)?", whoisresult)):
         whoisresult = False
     else:
-        print(colorText('[[red]][!] Choix incorrect !'))
+        print(colorText("[[red]][!] Choix incorrect !"))
         time.sleep(1)
         parameters_FR()
     time.sleep(2)
-    print(colorText('\n[[green]][+] Démarrage de l\'analyse...'))
+    print(colorText("\n[[green]][+] Démarrage de l'analyse..."))
 
     result = parser(completelink, whois)
 
     time.sleep(1)
 
-    os.system('clear')
+    os.system("clear")
     if whoisresult:
         link = re.findall(
-            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', completelink)
+            r"^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)", completelink
+        )
         whoisresults = whois.query(link[0])
-        print(colorText('[[blue]]\nWhois : '),
-              '\n\nDate d\'expiration du domaine :', whoisresults.expiration_date,
-              '\nDate de création du domaine :', whoisresults.creation_date,
-              '\nNom : ', whoisresults.registrar,
-              '\nDernière mise à jour : ', whoisresults.last_updated)
+        print(
+            colorText("[[blue]]\nWhois : "),
+            "\n\nDate d'expiration du domaine :",
+            whoisresults.expiration_date,
+            "\nDate de création du domaine :",
+            whoisresults.creation_date,
+            "\nNom : ",
+            whoisresults.registrar,
+            "\nDernière mise à jour : ",
+            whoisresults.last_updated,
+        )
 
     time.sleep(2)
-    print(colorText('[[green]]\n\n--Résultats--'),
-          '\n\n\nNombre de très grands titres (h1) : ', result[0],
-          '\nNombre de grands titres (h2) : ', result[1],
-          '\nNombre de titres moyens (h3) : ', result[2],
-          '\nNombre de titres (h4) : ', result[3],
-          '\nNombre de textes <p> : ', result[4],
-          '\nNombre de liens <a> : ', result[5],
-          '\nNombre d\'image <img> et <svg>: ', result[6],
-          '\nNombre de <div> : ', result[7],
-          '\nNombre de champs <input> : ', result[8],
-          '\nNombre de boutons <button> : ', result[9],
-          '\nNombre de formulaires <form> : ', result[10],
-          '\nNombre de listes <ul> et <ol> : ', result[11],
-          '\nNombre d\'élements de listes <li>: ', result[12])
+    print(
+        colorText("[[green]]\n\n--Résultats--"),
+        "\n\n\nNombre de très grands titres (h1) : ",
+        result[0],
+        "\nNombre de grands titres (h2) : ",
+        result[1],
+        "\nNombre de titres moyens (h3) : ",
+        result[2],
+        "\nNombre de titres (h4) : ",
+        result[3],
+        "\nNombre de textes <p> : ",
+        result[4],
+        "\nNombre de liens <a> : ",
+        result[5],
+        "\nNombre d'image <img> et <svg>: ",
+        result[6],
+        "\nNombre de <div> : ",
+        result[7],
+        "\nNombre de champs <input> : ",
+        result[8],
+        "\nNombre de boutons <button> : ",
+        result[9],
+        "\nNombre de formulaires <form> : ",
+        result[10],
+        "\nNombre de listes <ul> et <ol> : ",
+        result[11],
+        "\nNombre d'élements de listes <li>: ",
+        result[12],
+    )
     time.sleep(2)
     if result[14] >= 1:
-        js = BeautifulSoup(request.text, 'html.parser')
-        js = js.find_all('script')
+        js = BeautifulSoup(request.text, "html.parser")
+        js = js.find_all("script")
         varcount = 0
         functioncount = 0
         conditioncount = 0
         for balise in js:
             try:
-                varcount += balise.count('var')
+                varcount += balise.count("var")
             except:
                 pass
             try:
-                functioncount += balise.count('function')
+                functioncount += balise.count("function")
             except:
                 pass
             try:
-                conditioncount += balise.count(
-                    'if(') + balise.count('else(') + balise.count('else if(') + balise.count(
-                    'if (') + balise.count('else (') + balise.count('else if (')
+                conditioncount += (
+                    balise.count("if(")
+                    + balise.count("else(")
+                    + balise.count("else if(")
+                    + balise.count("if (")
+                    + balise.count("else (")
+                    + balise.count("else if (")
+                )
             except:
                 pass
         print(
-            colorText('\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}\nNombre de condition(s) : {}').format(varcount, functioncount, conditioncount))
+            colorText(
+                "\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}\nNombre de condition(s) : {}"
+            ).format(varcount, functioncount, conditioncount)
+        )
         print(
-            colorText('[[cyan]]\n[+] Vérification d\'éventuels fichiers javascript tiers...\n'))
+            colorText(
+                "[[cyan]]\n[+] Vérification d'éventuels fichiers javascript tiers...\n"
+            )
+        )
         time.sleep(1)
 
-        for src in soup.find_all('script'):
-            if src.get('src') == None:
+        for src in soup.find_all("script"):
+            if src.get("src") == None:
                 continue
-            if 'https://' in src.get('src') or 'http://' in src.get('src'):
-                linkk = src.get('src')
-            elif src.get('src').startswith('/'):
-                linkk = completelink + src.get('src')
+            if "https://" in src.get("src") or "http://" in src.get("src"):
+                linkk = src.get("src")
+            elif src.get("src").startswith("/"):
+                linkk = completelink + src.get("src")
             else:
-                linkk = completelink + '/' + src.get('src')
-            print(colorText('[[green]][+] Fichier détecté :'),
-                  src.get('src'), '\n')
+                linkk = completelink + "/" + src.get("src")
+            print(colorText("[[green]][+] Fichier détecté :"), src.get("src"), "\n")
             javascriptrequest = requests.get(linkk)
-            javascript = BeautifulSoup(javascriptrequest.text, 'html.parser')
-            print(javascript)
-            linkk = ''
-            functioncount = 0
-            for i in javascript.find_all('function'):
-                functioncount += 1
-            print(colorText('[[cyan]]Nombre de functions : '), functioncount)
-            conditioncount = 0
-            for i in javascript.find_all(['if', 'if(', 'else if (', 'else if(', 'else(', 'else (']):
-                conditioncount += 1
-            print(colorText('[[cyan]]Nombre de functions : '),
-                  conditioncount, '\n')
+            javascript = javascriptrequest.text
+            linkk = ""
+            print(
+                colorText("[[cyan]]Nombre de functions : "),
+                javascript.count("function"),
+            )
+            conditioncount = (
+                javascript.count("if(")
+                + javascript.count("else(")
+                + javascript.count("else if(")
+                + javascript.count("if (")
+                + javascript.count("else (")
+                + javascript.count("else if (")
+            )
+            print(colorText("[[cyan]]Nombre de conditions : "), conditioncount)
+            print(
+                colorText("[[cyan]][+] Nombre de déclarement de variables : \n"),
+                javascript.count("var"),
+            )
 
     else:
-        print(
-            colorText('[[red]]\n[-] Aucun javascript n\'est présent sur cette page\n'))
+        print(colorText("[[red]]\n[-] Aucun javascript n'est présent sur cette page\n"))
     if result[13] >= 1:
-        print(colorText(
-            '[[magenta]]\n\n[+] CSS Framework detected ! (TailWind CSS integrated by CDN)\n'))
-    customquestion = input(colorText(
-        '[[yellow]]\n[?] Voulez-vous ajouter des balises html à rechercher ? (Séparées d\'une virgule, exemple : <span, <footer, ...) : '))
+        print(
+            colorText(
+                "[[magenta]]\n\n[+] CSS Framework detected ! (TailWind CSS integrated by CDN)\n"
+            )
+        )
+    customquestion = input(
+        colorText(
+            "[[yellow]]\n[?] Voulez-vous ajouter des balises html à rechercher ? (Séparées d'une virgule, exemple : <span, <footer, ...) : "
+        )
+    )
     customs = customquestion.split(",")
-    if customquestion == '':
+    if customquestion == "":
         customs = False
     if customs:
-        print(colorText('[[yellow]]\n\n--Custom--\n'))
+        print(colorText("[[yellow]]\n\n--Custom--\n"))
         for custom in customs:
             resultcustom = request.text.count(str(custom))
-            print(colorText('Nombre total de '),
-                  custom, ': ', resultcustom)
+            print(colorText("Nombre total de "), custom, ": ", resultcustom)
     customs = []
-    again = input(colorText(
-        '[[yellow]]\n[?] Voulez-vous analyser un nouveau domaine ? (y/n): '))
-    if (bool(re.match(r"OUI|oui|y(?:es)?|Y", again))):
+    again = input(
+        colorText("[[yellow]]\n[?] Voulez-vous analyser un nouveau domaine ? (y/n): ")
+    )
+    if bool(re.match(r"OUI|oui|y(?:es)?|Y", again)):
         parameters_FR()
-    elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", again))):
-        os.system('clear')
-        print(colorText('\n[[red]][!] Retour au terminal... '))
+    elif bool(re.match(r"N(?:ON)?|n(?:on?)?", again)):
+        os.system("clear")
+        print(colorText("\n[[red]][!] Retour au terminal... "))
         sys.exit()
 
 
 def parameters_US():
     global request
-    completelink = str(input(colorText(
-        "[[white]]\nPage link (must start with https/http): ")))
-    if (bool(re.match(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*', completelink))):
+    completelink = str(
+        input(colorText("[[white]]\nPage link (must start with https/http): "))
+    )
+    if bool(
+        re.match(
+            r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*",
+            completelink,
+        )
+    ):
         try:
             request = requests.get(completelink, timeout=5)
-            print(colorText('[[green]][+] Succes !'))
+            print(colorText("[[green]][+] Succes !"))
         except:
-            print(colorText('\n[[red]][-] The site has timeout ..'))
+            print(colorText("\n[[red]][-] The site has timeout .."))
             time.sleep(2)
             parameters_US()
     else:
-        print(colorText('[[red]][!] Incorrect syntax !'))
+        print(colorText("[[red]][!] Incorrect syntax !"))
         time.sleep(2)
         parameters_US()
-    whoisresult = input(colorText(
-        '[[yellow]]\n[?] Do you want to scan the domain using whois? (y/n): '))
-    if (bool(re.match(r"OUI|oui|y(?:es)?|Y", whoisresult))):
+    whoisresult = input(
+        colorText("[[yellow]]\n[?] Do you want to scan the domain using whois? (y/n): ")
+    )
+    if bool(re.match(r"OUI|oui|y(?:es)?|Y", whoisresult)):
         whoisresult = True
-    elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", whoisresult))):
+    elif bool(re.match(r"N(?:ON)?|n(?:on?)?", whoisresult)):
         whoisresult = False
     else:
-        print(colorText('[[red]][!] Incorrect choice'))
+        print(colorText("[[red]][!] Incorrect choice !"))
         time.sleep(2)
         parameters_US()
     time.sleep(2)
-    print(colorText('\n[[green]][+] Starting the analysis...'))
+    print(colorText("\n[[green]][+] Starting the analysis..."))
     time.sleep(1)
 
     result = parser(completelink, whois)
 
     time.sleep(1)
 
-    os.system('clear')
+    os.system("clear")
     if whoisresult:
         link = re.findall(
-            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', completelink)
+            r"^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)", completelink
+        )
         whoisresults = whois.query(link[0])
-        print(colorText('[[blue]]\nWhois : '),
-              '\n\nDomain expiration date :', whoisresults.expiration_date,
-              '\nDomain creation date:', whoisresults.creation_date,
-              '\nServer : ', whoisresults.registrar,
-              '\nLastest update: ', whoisresults.last_updated)
+        print(
+            colorText("[[blue]]\nWhois : "),
+            "\n\nDomain expiration date :",
+            whoisresults.expiration_date,
+            "\nDomain creation date:",
+            whoisresults.creation_date,
+            "\nServer : ",
+            whoisresults.registrar,
+            "\nLastest update: ",
+            whoisresults.last_updated,
+        )
     time.sleep(2)
-    print(colorText('[[green]]\n\n--Results--'),
-          '\n\n\nNumber of very large titles (h1) : ', result[0],
-          '\nNumber of major titles (h2) : ', result[1],
-          '\nNumber of medium-sized titles (h3) : ', result[2],
-          '\nNumber of titles (h4) : ', result[3],
-          '\nNumber total of texts <p> & <h1.... : ', result[4],
-          '\nNumber of links <a> : ', result[5],
-          '\nNumber of images <img> and <svg> : ', result[6],
-          '\nNumber of div <div> : ', result[7],
-          '\nNumber of <input> fields : ', result[8],
-          '\nNumber of buttons <button> : ', result[9],
-          '\nNumber of forms <form> : ', result[10]),
-    '\nNumber of lists <ul> and <ol> : ', result[11],
-    '\nNumber of list items : ', result[12]
+    print(
+        colorText("[[green]]\n\n--Results--"),
+        "\n\n\nNumber of very large titles (h1) : ",
+        result[0],
+        "\nNumber of major titles (h2) : ",
+        result[1],
+        "\nNumber of medium-sized titles (h3) : ",
+        result[2],
+        "\nNumber of titles (h4) : ",
+        result[3],
+        "\nNumber total of texts <p> & <h1.... : ",
+        result[4],
+        "\nNumber of links <a> : ",
+        result[5],
+        "\nNumber of images <img> and <svg> : ",
+        result[6],
+        "\nNumber of div <div> : ",
+        result[7],
+        "\nNumber of <input> fields : ",
+        result[8],
+        "\nNumber of buttons <button> : ",
+        result[9],
+        "\nNumber of forms <form> : ",
+        result[10],
+    ),
+    "\nNumber of lists <ul> and <ol> : ", result[11],
+    "\nNumber of list items : ", result[12]
     time.sleep(2)
     if result[14] >= 1:
-        varcount = request.text.count('var')
-        functioncount = request.text.count('function')
-        conditioncount = request.text.count(
-            'if(') + request.text.count('else(') + request.text.count('else if(') + request.text.count(
-            'if (') + request.text.count('else (') + request.text.count('else if (')
+        varcount = request.text.count("var")
+        functioncount = request.text.count("function")
+        conditioncount = (
+            request.text.count("if(")
+            + request.text.count("else(")
+            + request.text.count("else if(")
+            + request.text.count("if (")
+            + request.text.count("else (")
+            + request.text.count("else if (")
+        )
         print(
-            colorText('\n[[cyan]][+] Javascript is detected on this page with a total of {} variables declared\nNumber of function(s) : {}\nNumber of condition(s) : {}').format(varcount, functioncount, conditioncount))
+            colorText(
+                "\n[[cyan]][+] Javascript is detected on this page with a total of {} variables declared\nNumber of function(s) : {}\nNumber of condition(s) : {}"
+            ).format(varcount, functioncount, conditioncount)
+        )
+        print(colorText("[[cyan]]\n[+] Checking for third party javascript files...\n"))
+        time.sleep(1)
+
+        for src in soup.find_all("script"):
+            if src.get("src") == None:
+                continue
+            if "https://" in src.get("src") or "http://" in src.get("src"):
+                linkk = src.get("src")
+            elif src.get("src").startswith("/"):
+                linkk = completelink + src.get("src")
+            else:
+                linkk = completelink + "/" + src.get("src")
+            print(colorText("[[green]][+] File detected :"), src.get("src"), "\n")
+            javascriptrequest = requests.get(linkk)
+            javascript = javascriptrequest.text
+            linkk = ""
+            print(
+                colorText("[[cyan]][+] Number of functions : "),
+                javascript.count("function"),
+            )
+            conditioncount = (
+                javascript.count("if(")
+                + javascript.count("else(")
+                + javascript.count("else if(")
+                + javascript.count("if (")
+                + javascript.count("else (")
+                + javascript.count("else if (")
+            )
+            print(colorText("[[cyan]][+] Number of conditions : "), conditioncount)
+            print(
+                colorText("[[cyan]][+] Number of variable declarations : \n"),
+                javascript.count("var"),
+            )
     else:
-        print(
-            colorText('[[red]]\n[-] No javascript is present on this page\n'))
+        print(colorText("[[red]]\n[-] No javascript is present on this page\n"))
     if result[13] >= 1:
-        print(colorText(
-            '[[magenta]][+] CSS Framework dedected ! (Tailwind CSS integrated by CDN) '))
-    customquestion = input(colorText(
-        '[[yellow]]\n[?] Do you want to add html tags to search? (Separated by a comma, format example : <span, <footer, ...) : '))
+        print(
+            colorText(
+                "[[magenta]][+] CSS Framework dedected ! (Tailwind CSS integrated by CDN) "
+            )
+        )
+    customquestion = input(
+        colorText(
+            "[[yellow]]\n[?] Do you want to add html tags to search? (Separated by a comma, format example : <span, <footer, ...) : "
+        )
+    )
     customs = customquestion.split(",")
-    if customquestion == '':
+    if customquestion == "":
         customs = False
     if customs:
-        print(colorText('[[yellow]]\n\n--Custom--\n'))
+        print(colorText("[[yellow]]\n\n--Custom--\n"))
         for custom in customs:
             resultcustom = request.text.count(str(custom))
-            print(colorText('Number of '),
-                  custom, ': ', resultcustom)
+            print(colorText("Number of "), custom, ": ", resultcustom)
     customs = []
-    again = input(colorText(
-        '[[yellow]]\n[?] Do you want to analyse a new domain? (y/n): '))
-    if (bool(re.match(r"OUI|oui|y(?:es)?|Y", again))):
+    again = input(
+        colorText("[[yellow]]\n[?] Do you want to analyse a new domain? (y/n): ")
+    )
+    if bool(re.match(r"OUI|oui|y(?:es)?|Y", again)):
         parameters_US()
-    elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", again))):
-        os.system('clear')
-        print(colorText('\n[[red]][!] Exiting... '))
+    elif bool(re.match(r"N(?:ON)?|n(?:on?)?", again)):
+        os.system("clear")
+        print(colorText("\n[[red]][!] Exiting... "))
         sys.exit()
 
 
@@ -331,50 +460,65 @@ def parser(url, whois):
     global request
     counts = []
 
-    counts.append((request.text.count('<h1')))
-    counts.append((request.text.count('<h2')))
-    counts.append((request.text.count('<h3')))
-    counts.append((request.text.count('<h4')))
-    counts.append((request.text.count('<h4') + request.text.count('<h3') +
-                  request.text.count('<h2') + request.text.count('<h1') + request.text.count('<p')))
-    counts.append((request.text.count('<a')))
-    counts.append((request.text.count('<img')) + (request.text.count('<svg')))
-    counts.append((request.text.count('<div')))
-    counts.append((request.text.count('<input')))
-    counts.append((request.text.count('<button')))
-    counts.append((request.text.count('<form')))
-    counts.append((request.text.count('<ul')) + (request.text.count('<ol')))
-    counts.append((request.text.count('<li')))
-    counts.append((request.text.count('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">')))
-    counts.append((request.text.count('<script')))
+    counts.append((request.text.count("<h1")))
+    counts.append((request.text.count("<h2")))
+    counts.append((request.text.count("<h3")))
+    counts.append((request.text.count("<h4")))
+    counts.append(
+        (
+            request.text.count("<h4")
+            + request.text.count("<h3")
+            + request.text.count("<h2")
+            + request.text.count("<h1")
+            + request.text.count("<p")
+        )
+    )
+    counts.append((request.text.count("<a")))
+    counts.append((request.text.count("<img")) + (request.text.count("<svg")))
+    counts.append((request.text.count("<div")))
+    counts.append((request.text.count("<input")))
+    counts.append((request.text.count("<button")))
+    counts.append((request.text.count("<form")))
+    counts.append((request.text.count("<ul")) + (request.text.count("<ol")))
+    counts.append((request.text.count("<li")))
+    counts.append(
+        (
+            request.text.count(
+                '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">'
+            )
+        )
+    )
+    counts.append((request.text.count("<script")))
 
-    soup = BeautifulSoup(request.text, 'html.parser')
+    soup = BeautifulSoup(request.text, "html.parser")
     return counts
 
 
 def main_ANG():
     global asciidraw
     os.system("clear")
-    print(colorText(asciidraw),
-          "\n[1] Analyse a web page\n[2] Langue/Langage\n\n\n[3] Exit")
+    print(
+        colorText(asciidraw),
+        "\n[1] Analyse a web page\n[2] Langue/Langage\n\n\n[3] Exit",
+    )
     choice = input("\nChoix : ")
     try:
         choice = int(choice)
     except ValueError:
-        print(colorText('[[red]]\n[!] Incorrect choice !\n'))
+        print(colorText("[[red]]\n[!] Incorrect choice !\n"))
         time.sleep(2)
-        os.system('clear')
+        os.system("clear")
         main_ANG()
-    if (choice == 1):
+    if choice == 1:
         parameters_US()
-    elif(choice == 2):
+    elif choice == 2:
         lang()
-    elif(choice == 3):
-        print(colorText('[[red]]\n[!] Exiting..'))
+    elif choice == 3:
+        print(colorText("[[red]]\n[!] Exiting.."))
         time.sleep(1)
         sys.exit()
     else:
-        print(colorText('[[red]]\n[!] Incorrect choice !\n'))
+        print(colorText("[[red]]\n[!] Incorrect choice !\n"))
         time.sleep(2)
         main_ANG()
 
@@ -382,28 +526,30 @@ def main_ANG():
 def main_FR():
     global asciidraw
     os.system("clear")
-    print(colorText(asciidraw),
-          "\n[1] Analyser une page web\n[2] Langue/Langage\n\n\n[3] Quitter")
+    print(
+        colorText(asciidraw),
+        "\n[1] Analyser une page web\n[2] Langue/Langage\n\n\n[3] Quitter",
+    )
     choice = input("\nChoix : ")
     try:
         choice = int(choice)
     except ValueError:
-        print(colorText('[[red]]\n[!] Choix incorrect !\n'))
+        print(colorText("[[red]]\n[!] Choix incorrect !\n"))
         time.sleep(2)
-        os.system('clear')
+        os.system("clear")
         main_FR()
-    if (choice == 1):
+    if choice == 1:
         parameters_FR()
-    elif(choice == 2):
+    elif choice == 2:
         lang()
-    elif(choice == 3):
-        print(colorText('[[red]]\n[!] Retour au terminal...'))
+    elif choice == 3:
+        print(colorText("[[red]]\n[!] Retour au terminal..."))
         sys.exit()
     else:
-        print(colorText('[[red]]\n[!] Choix incorrect !\n'))
+        print(colorText("[[red]]\n[!] Choix incorrect !\n"))
         time.sleep(2)
         main_FR()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     lang()
