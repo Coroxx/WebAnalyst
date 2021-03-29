@@ -3,6 +3,7 @@
 ![alt text](https://i.ibb.co/yYLqs8c/image.png)
 
 **French 🧶 :**
+
 Installer :
 
 ```
@@ -24,6 +25,7 @@ Fonctionnalitées :
   - Obtenez le nombre de liens 
   - Obtenez le nombre de div 
   - ...
+  
   ![alt text](https://i.ibb.co/GQgg6Z6/image.png)
   
   Javascript 📌 : 
