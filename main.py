@@ -171,10 +171,8 @@ def parameters_FR():
                     'if (') + balise.count('else (') + balise.count('else if (')
             except:
                 pass
-
         print(
             colorText('\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}\nNombre de condition(s) : {}').format(varcount, functioncount, conditioncount))
-
         print(
             colorText('[[cyan]]\n[+] Vérification d\'éventuels fichiers javascript tiers...\n'))
         time.sleep(1)
