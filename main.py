@@ -22,7 +22,7 @@ COLORS = {
     "cyan-background": "\u001b[46;1m",
 }
 
-asciidraw = "\n[[lightyellow]] _ _ _     _      _____         _         _   \n| | | |___| |_   |  _  |___ ___| |_ _ ___| |_ \n| | | | -_| . |  |     |   | .'| | | |_ -|  _|\n|_____|___|___|  |__|__|_|_|__,|_|_  |___|_|  \n                                 |___|        \nAuthor : @Coroxx on github\n"
+asciidraw = "\n[[lightyellow]] _ _ _     _      _____         _         _   \n| | | |___| |_   |  _  |___ ___| |_ _ ___| |_ \n| | | | -_| . |  |     |   | .'| | | |_ -|  _|\n|_____|___|___|  |__|__|_|_|__,|_|_  |___|_|  \n                                 |___|        \nVersion : 1.1\nAuthor : @Coroxx on github\n"
 
 
 def colorText(text):
@@ -54,6 +54,7 @@ try:
     from bs4 import BeautifulSoup
     import urllib
     from urllib.request import urlopen
+    from bs4 import BeautifulSoup
 except:
     os.system("clear")
     if language == "fr":
@@ -88,13 +89,15 @@ except:
 def parameters_FR():
     settings = []
     global request
-    link = str(input(colorText(
+    global completelink
+
+    completelink = str(input(colorText(
         "[[white]]\nLien de la page (doit commencer par https/http): ")))
-    if (bool(re.match(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*', link))):
+    if (bool(re.match(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*', completelink))):
         try:
-            request = requests.get(link, timeout=5)
+            request = requests.get(completelink, timeout=5)
             print(colorText('[[green]][+] Ajouté !'))
-            settings.append(link)
+            settings.append(completelink)
         except:
             print(colorText('\n[[red]][-] Le site ne réponds pas..'))
             time.sleep(2)
@@ -109,17 +112,21 @@ def parameters_FR():
         whoisresult = True
     elif (bool(re.match(r"N(?:ON)?|n(?:on?)?", whoisresult))):
         whoisresult = False
+    else:
+        print(colorText('[[red]][!] Choix incorrect !'))
+        time.sleep(1)
+        parameters_FR()
     time.sleep(2)
     print(colorText('\n[[green]][+] Démarrage de l\'analyse...'))
 
-    result = parser(link, whois)
+    result = parser(completelink, whois)
 
     time.sleep(1)
 
     os.system('clear')
     if whoisresult:
         link = re.findall(
-            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', link)
+            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', completelink)
         whoisresults = whois.query(link[0])
         print(colorText('[[blue]]\nWhois : '),
               '\n\nDate d\'expiration du domaine :', whoisresults.expiration_date,
@@ -144,13 +151,59 @@ def parameters_FR():
           '\nNombre d\'élements de listes <li>: ', result[12])
     time.sleep(2)
     if result[14] >= 1:
-        varcount = request.text.count('var')
-        functioncount = request.text.count('function')
-        conditioncount = request.text.count(
-            'if(') + request.text.count('else(') + request.text.count('else if(') + request.text.count(
-            'if (') + request.text.count('else (') + request.text.count('else if (')
+        js = BeautifulSoup(request.text, 'html.parser')
+        js = js.find_all('script')
+        varcount = 0
+        functioncount = 0
+        conditioncount = 0
+        for balise in js:
+            try:
+                varcount += balise.count('var')
+            except:
+                pass
+            try:
+                functioncount += balise.count('function')
+            except:
+                pass
+            try:
+                conditioncount += balise.count(
+                    'if(') + balise.count('else(') + balise.count('else if(') + balise.count(
+                    'if (') + balise.count('else (') + balise.count('else if (')
+            except:
+                pass
+
         print(
             colorText('\n[[cyan]][+] Javascript est détecté sur cette page avec un total de {} variables déclarées\nNombre de fonction(s) : {}\nNombre de condition(s) : {}').format(varcount, functioncount, conditioncount))
+
+        print(
+            colorText('[[cyan]]\n[+] Vérification d\'éventuels fichiers javascript tiers...\n'))
+        time.sleep(1)
+
+        for src in soup.find_all('script'):
+            if src.get('src') == None:
+                continue
+            if 'https://' in src.get('src') or 'http://' in src.get('src'):
+                linkk = src.get('src')
+            elif src.get('src').startswith('/'):
+                linkk = completelink + src.get('src')
+            else:
+                linkk = completelink + '/' + src.get('src')
+            print(colorText('[[green]][+] Fichier détecté :'),
+                  src.get('src'), '\n')
+            javascriptrequest = requests.get(linkk)
+            javascript = BeautifulSoup(javascriptrequest.text, 'html.parser')
+            print(javascript)
+            linkk = ''
+            functioncount = 0
+            for i in javascript.find_all('function'):
+                functioncount += 1
+            print(colorText('[[cyan]]Nombre de functions : '), functioncount)
+            conditioncount = 0
+            for i in javascript.find_all(['if', 'if(', 'else if (', 'else if(', 'else(', 'else (']):
+                conditioncount += 1
+            print(colorText('[[cyan]]Nombre de functions : '),
+                  conditioncount, '\n')
+
     else:
         print(
             colorText('[[red]]\n[-] Aucun javascript n\'est présent sur cette page\n'))
@@ -181,11 +234,11 @@ def parameters_FR():
 
 def parameters_US():
     global request
-    link = str(input(colorText(
+    completelink = str(input(colorText(
         "[[white]]\nPage link (must start with https/http): ")))
-    if (bool(re.match(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*', link))):
+    if (bool(re.match(r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=])*', completelink))):
         try:
-            request = requests.get(link, timeout=5)
+            request = requests.get(completelink, timeout=5)
             print(colorText('[[green]][+] Succes !'))
         except:
             print(colorText('\n[[red]][-] The site has timeout ..'))
@@ -209,21 +262,20 @@ def parameters_US():
     print(colorText('\n[[green]][+] Starting the analysis...'))
     time.sleep(1)
 
-    result = parser(link, whois)
+    result = parser(completelink, whois)
 
     time.sleep(1)
 
     os.system('clear')
     if whoisresult:
         link = re.findall(
-            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', link)
+            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n?]+)', completelink)
         whoisresults = whois.query(link[0])
         print(colorText('[[blue]]\nWhois : '),
               '\n\nDomain expiration date :', whoisresults.expiration_date,
               '\nDomain creation date:', whoisresults.creation_date,
               '\nServer : ', whoisresults.registrar,
               '\nLastest update: ', whoisresults.last_updated)
-
     time.sleep(2)
     print(colorText('[[green]]\n\n--Results--'),
           '\n\n\nNumber of very large titles (h1) : ', result[0],
@@ -277,6 +329,7 @@ def parameters_US():
 
 
 def parser(url, whois):
+    global soup
     global request
     counts = []
 
@@ -297,6 +350,7 @@ def parser(url, whois):
     counts.append((request.text.count('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">')))
     counts.append((request.text.count('<script')))
 
+    soup = BeautifulSoup(request.text, 'html.parser')
     return counts
 
 
