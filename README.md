@@ -2,6 +2,10 @@
 
 ![alt text](https://i.ibb.co/yYLqs8c/image.png)
 
+Two languages available ⚔️ :
+
+![alt text](https://i.ibb.co/52prBVt/image.png)
+
 **French 🧶 :**
 
 Installer :
