@@ -24,7 +24,7 @@ Fonctionnalitées :
   - Obtenez le nombre d'image
   - Obtenez le nombre de liens 
   - Obtenez le nombre de div 
-  - ...
+  - Bien d'autres satistiques
   
   ![alt text](https://i.ibb.co/GQgg6Z6/image.png)
   
