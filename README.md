@@ -79,3 +79,5 @@ In case of pip error (Mac OS for example) you can use :
 ```
 python -m pip install -r requirements.txt
 ```
+
+Doc translation coming soon ! 
