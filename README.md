@@ -1,7 +1,7 @@
 # Web Analyst 🦉
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
-![alt text](https://i.ibb.co/t4zX4X4/image.png)
+![alt text](https://i.ibb.co/1sv2w9p/image.png)
 
 Two languages available ⚔️ :
 
